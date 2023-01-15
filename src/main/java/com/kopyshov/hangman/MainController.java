@@ -18,6 +18,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystemNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
@@ -170,7 +173,7 @@ public class MainController implements Initializable {
         leftLeg.setVisible(false);
         rightLeg.setVisible(false);
         try {
-            FileReader fileReader = new FileReader("src/main/resources/com/kopyshov/hangman/words.txt");
+            FileReader fileReader = new FileReader("src/main/resources/com/kopyshov/hangman/words.txt", Charset.forName("Cp1251"));
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             arrayWords.clear();
             while ((bufferedReader.readLine()) != null) {
@@ -180,6 +183,7 @@ public class MainController implements Initializable {
             throw new RuntimeException(e);
         }
         randomWord = arrayWords.get((int) (Math.random() * arrayWords.size()));
+        System.out.println(randomWord);
         splitRandomWord = randomWord.toCharArray();
         addRandomWordToSecretWord();
     }

@@ -115,10 +115,10 @@
                         <list>storage</list>
                     </attachList>
                     <bundlesList>
-                        <list>com.kopyshov.sample.main</list>
+                        <list>com.kopyshov.hangman.Main</list>
                     </bundlesList>
                     <reflectionList>
-                        <list>com.kopyshov.sample.MainController</list>
+                        <list>com.kopyshov.hangman.MainController</list>
                     </reflectionList>
                 </configuration>
             </plugin>
