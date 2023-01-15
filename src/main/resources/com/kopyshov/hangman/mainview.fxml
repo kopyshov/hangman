@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kopyshov.hangman.MainController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="newGame" mnemonicParsing="false" onAction="#startNewGame" text="New Game..." />
+                  <MenuItem fx:id="exitApp" mnemonicParsing="false" onAction="#exitGame" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem fx:id="rulesFromWiki" mnemonicParsing="false" text="Rules" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#777879" height="50.0" layoutX="29.0" layoutY="242.0" stroke="BLACK" strokeType="INSIDE" width="226.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#777879" height="212.0" layoutX="46.0" layoutY="30.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" width="11.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#777879" height="14.0" layoutX="46.0" layoutY="30.0" scaleZ="2.0" stroke="BLACK" strokeType="INSIDE" width="135.0">
+               <rotationAxis>
+                  <Point3D z="2.0" />
+               </rotationAxis>
+            </Rectangle>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#777879" height="14.0" layoutX="40.0" layoutY="55.0" rotate="-42.4" stroke="BLACK" strokeType="INSIDE" width="80.0" />
+            <Line endX="-100.0" endY="-44.600013732910156" fill="BLACK" layoutX="258.0" layoutY="89.0" startX="-100.0" startY="-9.000007629394531" strokeWidth="2.0" />
+            <Circle fx:id="head" fill="WHITE" layoutX="157.0" layoutY="104.0" radius="23.0" stroke="BLACK" strokeType="INSIDE" visible="false" />
+            <Line fx:id="body" endX="-100.0" endY="-44.600013732910156" fill="BLACK" layoutX="259.0" layoutY="173.0" startX="-100.0" startY="8.599990844726562" strokeWidth="2.0" visible="false" />
+            <Line fx:id="leftLeg" endX="-100.0" endY="-44.600013732910156" fill="BLACK" layoutX="259.0" layoutY="228.0" startX="-122.20001220703125" startY="-5.6000213623046875" strokeWidth="2.0" visible="false" />
+            <Line fx:id="leftHand" endX="-100.0" endY="-44.600013732910156" fill="BLACK" layoutX="259.0" layoutY="182.0" startX="-122.20001220703125" startY="-5.6000213623046875" strokeWidth="2.0" visible="false" />
+            <Line fx:id="rightHand" endX="-100.0" endY="-44.600013732910156" fill="BLACK" layoutX="260.0" layoutY="184.0" startX="-78.5999755859375" startY="-11.199996948242188" strokeWidth="2.0" visible="false" />
+            <Line fx:id="rightLeg" endX="-100.0" endY="-44.600013732910156" fill="BLACK" layoutX="260.0" layoutY="230.0" startX="-78.5999755859375" startY="-11.199996948242188" strokeWidth="2.0" visible="false" />
+            <TextArea fx:id="terminal" editable="false" focusTraversable="false" layoutX="292.0" layoutY="17.0" prefHeight="211.0" prefWidth="294.0" />
+            <TextField fx:id="scannerLetter" alignment="CENTER" layoutX="520.0" layoutY="244.0" prefHeight="47.0" prefWidth="66.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextField>
+            <Label layoutX="325.0" layoutY="250.0" prefHeight="36.0" prefWidth="179.0" text="ENTER LETTER HERE ">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </center>
+   <bottom>
+      <GridPane prefHeight="68.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <HBox fx:id="secretWord" alignment="CENTER" GridPane.rowIndex="1">
+               <padding>
+                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </HBox>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="37.0" prefWidth="600.0" text="SECRET WORD" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Black" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+   </bottom>
+</BorderPane>
