@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
@@ -46,10 +47,8 @@ public class MainController implements Initializable {
     int matches = 0;
     private static String randomWord;
     char[] splitRandomWord = new char[0];
+    private static HashMap<String, Integer> rightChars;
     private static int countTry = 6;
-    private final ArrayList<String> arrayWords = new ArrayList<>();
-    private static String lastCharacter = "";
-    public String url = "https://ru.wikipedia.org/wiki/%D0%92%D0%B8%D1%81%D0%B5%D0%BB%D0%B8%D1%86%D0%B0_(%D0%B8%D0%B3%D1%80%D0%B0)";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createWords();
@@ -61,6 +60,7 @@ public class MainController implements Initializable {
     public void newGame() {
         setMessage();
         countTry = 6;
+        rightChars = new HashMap<>();
         scannerLetter.setDisable(false);
         littleHuman.clear();
         littleHuman.add(head);
@@ -91,21 +91,7 @@ public class MainController implements Initializable {
         scannerLetter.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER)  {
                 String enteredChar = scannerLetter.getText();
-                if (enteredChar.equals("")) {
-                    terminal.appendText("Ну куда спешишь?\n" +
-                            "Букву сначала набери\n");
-                } else if (enteredChar.equals(lastCharacter)) {
-                    terminal.appendText("Вы уже вводили букву " + enteredChar + "\n" +
-                            "Введите другую.\n");
-                    scannerLetter.setTextFormatter(null);
-                    scannerLetter.setText("");
-                    scannerLetter.setTextFormatter(formatter);
-                } else {
-                    lastCharacter = enteredChar;
-                    terminal.appendText("Введена буква " + enteredChar + "\n");
-                    scannerLetter.setTextFormatter(null);
-                    scannerLetter.setText("");
-                    scannerLetter.setTextFormatter(formatter);
+                if (checkEnteredChar(enteredChar, formatter)){
                     compareCharWithRndWord(enteredChar);
                 }
             }
@@ -116,6 +102,36 @@ public class MainController implements Initializable {
             }
         });
     }
+
+    private boolean checkEnteredChar(String enteredChar, TextFormatter formatter) {
+
+        if (enteredChar.equals("")) {
+            terminal.appendText("""
+                    Ну куда спешишь?
+                    Букву сначала набери!
+                    """);
+            return false;
+        } else {
+            terminal.appendText("Введена буква " + enteredChar + "\n");
+            scannerLetter.setTextFormatter(null);
+            scannerLetter.setText("");
+            scannerLetter.setTextFormatter(formatter);
+            if (!(rightChars.containsKey(enteredChar))) {
+                rightChars.put(enteredChar, 1);
+            } else {
+                if (rightChars.get(enteredChar) > 4) {
+                    terminal.appendText("Ну хватит уже... Выбери другую букву\n");
+                } else if (rightChars.get(enteredChar) > 0){
+                    terminal.appendText("Вы уже вводили эту букву\n");
+                }
+                rightChars.put(enteredChar, (rightChars.get(enteredChar) + 1));
+                return false;
+            }
+            return true;
+        }
+
+    }
+
     private void addRandomWordToSecretWord() {
         secretWord.getChildren().clear();
         for (Character l : splitRandomWord) {
@@ -132,7 +148,6 @@ public class MainController implements Initializable {
         }
     }
     private void compareCharWithRndWord(String enteredChar) {
-        System.out.println(enteredChar);
         if (randomWord.toUpperCase().contains(enteredChar)) {
             terminal.appendText("Угадал!\n");
             openCharacter(enteredChar);
@@ -157,8 +172,7 @@ public class MainController implements Initializable {
             littleHuman.getFirst().setVisible(true);
             littleHuman.removeFirst();
             --countTry;
-
-            if(countTry != 0) {
+            if (countTry != 0) {
                 if (countTry == 1 & matches < randomWord.length() / 2) {
                     terminal.appendText("Ошибся. Количество оставшихся попыток: " + (countTry) +
                             ".\nМне кажется человечка уже не спасти.\n");
@@ -175,9 +189,9 @@ public class MainController implements Initializable {
                     labelI.getParent().setStyle("-fx-border-color: black; -fx-background-color: white;");
                 }
                 terminal.appendText("Человечек повесился. Человечка жалко...\n" +
-                    "Секретное слово: " + randomWord + "\n" +
-                    "Чтобы начать новую игру нажмите\n" +
-                    "File -> New Game\n");
+                        "Секретное слово: " + randomWord + "\n" +
+                        "Чтобы начать новую игру нажмите\n" +
+                        "File -> New Game\n");
                 terminal.end();
             }
         }
