@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystemNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -54,6 +55,7 @@ public class MainController implements Initializable {
     char[] splitRandomWord = new char[0];
     private static int countTry = 6;
     private final ArrayList<String> arrayWords = new ArrayList<>();
+    private static String lastCharacter = "";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createWords();
@@ -94,11 +96,17 @@ public class MainController implements Initializable {
         scannerLetter.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER)  {
                 String enteredChar = scannerLetter.getText();
-                terminal.appendText("Введена буква " + enteredChar + "\n");
-                scannerLetter.setTextFormatter(null);
-                scannerLetter.setText("");
-                scannerLetter.setTextFormatter(formatter);
-                compareCharWithRndWord(enteredChar);
+                if (enteredChar.equals(lastCharacter)) {
+                    terminal.appendText("Вы уже вводили букву " + enteredChar + "\n" +
+                            "Введите другую.\n");
+                } else {
+                    lastCharacter = enteredChar;
+                    terminal.appendText("Введена буква " + enteredChar + "\n");
+                    scannerLetter.setTextFormatter(null);
+                    scannerLetter.setText("");
+                    scannerLetter.setTextFormatter(formatter);
+                    compareCharWithRndWord(enteredChar);
+                }
             }
             if (keyEvent.getCode() == KeyCode.BACK_SPACE || keyEvent.getCode() == KeyCode.DELETE){
                 scannerLetter.setTextFormatter(null);
@@ -133,7 +141,7 @@ public class MainController implements Initializable {
                 if (labelI.isVisible()) {
                     matches++;
                     if (countTry == 1 & countTry == matches) {
-                        terminal.appendText("Человечек вспотел!");
+                        terminal.appendText("Человечек вспотел!\n");
                     }
                 }
             }
