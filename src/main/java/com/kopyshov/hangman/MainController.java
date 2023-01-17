@@ -27,6 +27,8 @@ import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import static com.kopyshov.hangman.WordsData.createWords;
+
 public class MainController implements Initializable {
     @FXML
     TextArea terminal;
@@ -54,27 +56,34 @@ public class MainController implements Initializable {
     private final ArrayList<String> arrayWords = new ArrayList<>();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        createWords();
         newGame();
         scannerLetterListener();
         setMessage();
     }
+    public void newGame() {
+        setMessage();
+        countTry = 6;
+        scannerLetter.setDisable(false);
+        littleHuman.clear();
+        littleHuman.add(head);
+        littleHuman.add(body);
+        littleHuman.add(leftHand);
+        littleHuman.add(rightHand);
+        littleHuman.add(leftLeg);
+        littleHuman.add(rightLeg);
+        head.setVisible(false);
+        body.setVisible(false);
+        leftHand.setVisible(false);
+        rightHand.setVisible(false);
+        leftLeg.setVisible(false);
+        rightLeg.setVisible(false);
 
-    private void addRandomWordToSecretWord() {
-        secretWord.getChildren().clear();
-        for (Character l : splitRandomWord) {
-            Label rndWord = new Label(l.toString().toUpperCase());
-            rndWord.setVisible(false);
-            rndWord.setFont(new Font("Arial",20));
-            rndWord.setStyle("-fx-font-weight: bold");
-            StackPane rndStackPane = new StackPane();
-            rndStackPane.setStyle("-fx-border-color: white; -fx-background-color: black;");
-            rndStackPane.setPadding(new Insets(5));
-            rndStackPane.setMinSize(35, 35);
-            rndStackPane.getChildren().add(rndWord);
-            secretWord.getChildren().add(rndStackPane);
-        }
+        randomWord = WordsData.wordsData.get((int) (Math.random() * WordsData.wordsData.size()));
+        System.out.println(randomWord);
+        splitRandomWord = randomWord.toCharArray();
+        addRandomWordToSecretWord();
     }
-
     private void scannerLetterListener() {
         Pattern pattern = Pattern.compile("[а-яА-ЯёЁ]");
         TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
@@ -98,20 +107,40 @@ public class MainController implements Initializable {
             }
         });
     }
-
+    private void addRandomWordToSecretWord() {
+        secretWord.getChildren().clear();
+        for (Character l : splitRandomWord) {
+            Label rndWord = new Label(l.toString().toUpperCase());
+            rndWord.setVisible(false);
+            rndWord.setFont(new Font("Arial",20));
+            rndWord.setStyle("-fx-font-weight: bold");
+            StackPane rndStackPane = new StackPane();
+            rndStackPane.setStyle("-fx-border-color: white; -fx-background-color: black;");
+            rndStackPane.setPadding(new Insets(5));
+            rndStackPane.setMinSize(35, 35);
+            rndStackPane.getChildren().add(rndWord);
+            secretWord.getChildren().add(rndStackPane);
+        }
+    }
     private void compareCharWithRndWord(String enteredChar) {
         System.out.println(enteredChar);
         if (randomWord.toUpperCase().contains(enteredChar)) {
+            terminal.appendText("Угадал!\n");
             openCharacter(enteredChar);
             matches = 0;
             for(int i = 0; i < randomWord.length(); i++){
                 Label labelI = (Label) ((StackPane) secretWord.getChildren().get(i)).getChildren().get(0);
                 if (labelI.isVisible()) {
                     matches++;
+                    if (countTry == 1 & countTry == matches) {
+                        terminal.appendText("Человечек вспотел!");
+                    }
                 }
             }
             if(matches == randomWord.length()) {
-                terminal.appendText("Ты молодец!!\n");
+                terminal.appendText("Выиграл! Ты молодец!!\n"
+                                        + "Чтобы начать новую игру \n" +
+                                        "нажми File -> New Game");
                 terminal.end();
                 scannerLetter.setDisable(true);
             }
@@ -154,40 +183,6 @@ public class MainController implements Initializable {
             }
         }
     }
-
-    public void newGame() {
-        setMessage();
-        countTry = 6;
-        scannerLetter.setDisable(false);
-        littleHuman.clear();
-        littleHuman.add(head);
-        littleHuman.add(body);
-        littleHuman.add(leftHand);
-        littleHuman.add(rightHand);
-        littleHuman.add(leftLeg);
-        littleHuman.add(rightLeg);
-        head.setVisible(false);
-        body.setVisible(false);
-        leftHand.setVisible(false);
-        rightHand.setVisible(false);
-        leftLeg.setVisible(false);
-        rightLeg.setVisible(false);
-        try {
-            FileReader fileReader = new FileReader("src/main/resources/com/kopyshov/hangman/words.txt", Charset.forName("Cp1251"));
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            arrayWords.clear();
-            while ((bufferedReader.readLine()) != null) {
-                arrayWords.add(bufferedReader.readLine());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        randomWord = arrayWords.get((int) (Math.random() * arrayWords.size()));
-        System.out.println(randomWord);
-        splitRandomWord = randomWord.toCharArray();
-        addRandomWordToSecretWord();
-    }
-
     private void setMessage() {
         terminal.setText("Здравствуйте! Введите букву и нажмите Enter.\n");
 
