@@ -29,11 +29,6 @@
                   <MenuItem fx:id="exitApp" mnemonicParsing="false" onAction="#exitGame" text="Close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem fx:id="rulesFromWiki" mnemonicParsing="false" text="Rules" />
-            </items>
-          </Menu>
         </menus>
       </MenuBar>
    </top>

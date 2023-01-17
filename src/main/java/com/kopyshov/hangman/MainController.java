@@ -14,16 +14,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystemNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -56,6 +49,7 @@ public class MainController implements Initializable {
     private static int countTry = 6;
     private final ArrayList<String> arrayWords = new ArrayList<>();
     private static String lastCharacter = "";
+    public String url = "https://ru.wikipedia.org/wiki/%D0%92%D0%B8%D1%81%D0%B5%D0%BB%D0%B8%D1%86%D0%B0_(%D0%B8%D0%B3%D1%80%D0%B0)";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createWords();
@@ -63,6 +57,7 @@ public class MainController implements Initializable {
         scannerLetterListener();
         setMessage();
     }
+
     public void newGame() {
         setMessage();
         countTry = 6;
@@ -96,9 +91,15 @@ public class MainController implements Initializable {
         scannerLetter.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER)  {
                 String enteredChar = scannerLetter.getText();
-                if (enteredChar.equals(lastCharacter)) {
+                if (enteredChar.equals("")) {
+                    terminal.appendText("Ну куда спешишь?\n" +
+                            "Букву сначала набери\n");
+                } else if (enteredChar.equals(lastCharacter)) {
                     terminal.appendText("Вы уже вводили букву " + enteredChar + "\n" +
                             "Введите другую.\n");
+                    scannerLetter.setTextFormatter(null);
+                    scannerLetter.setText("");
+                    scannerLetter.setTextFormatter(formatter);
                 } else {
                     lastCharacter = enteredChar;
                     terminal.appendText("Введена буква " + enteredChar + "\n");
@@ -194,6 +195,7 @@ public class MainController implements Initializable {
     private void setMessage() {
         terminal.setText("Здравствуйте! Введите букву и нажмите Enter.\n");
 
+
     }
 
     public void startNewGame(ActionEvent actionEvent) {
@@ -203,4 +205,5 @@ public class MainController implements Initializable {
     public void exitGame(ActionEvent actionEvent) {
         System.exit(0);
     }
+
 }
