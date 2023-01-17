@@ -105,7 +105,7 @@
       <workItem from="1673734297707" duration="5161000" />
       <workItem from="1673782674850" duration="17487000" />
       <workItem from="1673807407803" duration="3318000" />
-      <workItem from="1673975363771" duration="9044000" />
+      <workItem from="1673975363771" duration="10263000" />
     </task>
     <task id="LOCAL-00001" summary="Update pom.xml for Desktop Application">
       <created>1673725539963</created>
@@ -142,7 +142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673985938551</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Update pom.xml for Desktop Application">
+      <created>1673989827001</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1673989827001</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

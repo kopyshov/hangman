@@ -119,7 +119,10 @@ public class MainController implements Initializable {
             if (!(rightChars.containsKey(enteredChar))) {
                 rightChars.put(enteredChar, 1);
             } else {
-                if (rightChars.get(enteredChar) > 4) {
+                if (rightChars.get(enteredChar) > 9){
+                    terminal.appendText("Ну ты там что?\n" +
+                                            "На клаве что-ли уснул?\n");
+                } else if (rightChars.get(enteredChar) > 4) {
                     terminal.appendText("Ну хватит уже... Выбери другую букву\n");
                 } else if (rightChars.get(enteredChar) > 0){
                     terminal.appendText("Вы уже вводили эту букву\n");
